@@ -1,16 +1,82 @@
 import React from "react";
 import { Github, Users, Mail } from "lucide-react";
 
-export default function GitHubProfileCard({ profile, mergedCount }) {
+export default function GitHubProfileCard({ profile, mergedCount, theme }) {
   if (!profile) return null;
 
-  const joinedYear = profile.created_at ? new Date(profile.created_at).getFullYear() : null;
-  const years = joinedYear ? Math.max(1, new Date().getFullYear() - joinedYear) : "—";
+  // Import THEMES from parent or receive theme colors as props
+  const THEMES = {
+    classic: {
+      bg: "bg-white",
+      cardBg: "bg-gray-50",
+      text: "text-gray-900",
+      textSecondary: "text-gray-600",
+      textTertiary: "text-gray-500",
+      accent: "text-blue-600"
+    },
+    midnight: {
+      bg: "bg-slate-900",
+      cardBg: "bg-slate-800",
+      text: "text-white",
+      textSecondary: "text-slate-300",
+      textTertiary: "text-slate-400",
+      accent: "text-cyan-400"
+    },
+    sunset: {
+      bg: "bg-gradient-to-br from-orange-50 to-pink-50",
+      cardBg: "bg-white/80 backdrop-blur",
+      text: "text-gray-900",
+      textSecondary: "text-orange-800",
+      textTertiary: "text-orange-600",
+      accent: "text-orange-600"
+    },
+    violet: {
+      bg: "bg-gradient-to-br from-purple-100 via-violet-50 to-fuchsia-100",
+      cardBg: "bg-white/90 backdrop-blur",
+      text: "text-gray-900",
+      textSecondary: "text-purple-700",
+      textTertiary: "text-purple-500",
+      accent: "text-purple-600"
+    },
+    ocean: {
+      bg: "bg-gradient-to-br from-blue-50 to-cyan-50",
+      cardBg: "bg-white/80 backdrop-blur",
+      text: "text-gray-900",
+      textSecondary: "text-blue-700",
+      textTertiary: "text-blue-500",
+      accent: "text-blue-600"
+    },
+    forest: {
+      bg: "bg-gradient-to-br from-green-50 to-emerald-50",
+      cardBg: "bg-white/90 backdrop-blur",
+      text: "text-gray-900",
+      textSecondary: "text-green-800",
+      textTertiary: "text-green-600",
+      accent: "text-green-600"
+    },
+    dark: {
+      bg: "bg-gray-950",
+      cardBg: "bg-gray-900",
+      text: "text-gray-100",
+      textSecondary: "text-gray-300",
+      textTertiary: "text-gray-400",
+      accent: "text-indigo-400"
+    },
+    neon: {
+      bg: "bg-black",
+      cardBg: "bg-gray-900",
+      text: "text-green-400",
+      textSecondary: "text-cyan-400",
+      textTertiary: "text-pink-400",
+      accent: "text-pink-500"
+    }
+  };
+
+  const t = THEMES[theme] || THEMES.classic;
 
   return (
-    <div className="flex items-start justify-between bg-white rounded-lg p-4 mb-2">
+    <div className={`flex items-start justify-between ${t.bg} rounded-lg p-4 mb-2`}>
       <div className="flex items-start gap-4">
-        {/* Set crossOrigin to help html2canvas avoid tainting */}
         <img
           src={profile.avatar_url}
           alt={profile.login}
@@ -20,35 +86,45 @@ export default function GitHubProfileCard({ profile, mergedCount }) {
 
         <div className="text-left">
           <div className="flex items-center gap-3">
-            <h3 className="text-xl font-extrabold leading-tight">{profile.name || profile.login}</h3>
-            <div className="text-sm text-gray-500">@{profile.login}</div>
+            <h3 className={`text-xl font-extrabold leading-tight ${t.text}`}>
+              {profile.name || profile.login}
+            </h3>
+            <div className={`text-sm ${t.textTertiary}`}>@{profile.login}</div>
           </div>
 
-          <div className="mt-2 flex items-center gap-4 text-sm text-gray-600">
-            <div className="flex items-center gap-1"><Users className="w-4 h-4 text-gray-500" /> <span>{profile.followers} followers</span></div>
-            <div className="text-gray-400">•</div>
-            <div className="text-gray-600">{profile.following} following</div>
+          <div className={`mt-2 flex items-center gap-4 text-sm ${t.textSecondary}`}>
+            <div className="flex items-center gap-1">
+              <Users className={`w-4 h-4 ${t.textTertiary}`} />
+              <span>{profile.followers} followers</span>
+            </div>
+            <div className={t.textTertiary}>•</div>
+            <div>{profile.following} following</div>
           </div>
 
-          {profile.bio && <div className="mt-2 text-sm text-gray-700 pr-2">{profile.bio}</div>}
+          {profile.bio && (
+            <div className={`mt-2 text-sm ${t.textSecondary} pr-2`}>{profile.bio}</div>
+          )}
 
-          <div className="mt-2 text-sm text-gray-600 flex items-center gap-3">
-            {profile.email && (
-              <div className="flex items-center gap-1"><Mail className="w-4 h-4 text-gray-500" /> <span>{profile.email}</span></div>
-            )}
-          </div>
+          {profile.email && (
+            <div className={`mt-2 text-sm ${t.textSecondary} flex items-center gap-3`}>
+              <div className="flex items-center gap-1">
+                <Mail className={`w-4 h-4 ${t.textTertiary}`} />
+                <span>{profile.email}</span>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
       <div className="flex flex-col items-center text-right">
-        <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-gray-100">
-          <Github className="w-6 h-6" />
+        <div className={`inline-flex items-center justify-center w-14 h-14 rounded-full ${t.cardBg}`}>
+          <Github className={`w-6 h-6 ${t.accent}`} />
         </div>
 
         <div className="mt-2 text-center">
-          <div className="text-lg font-bold">{mergedCount ?? "—"} <span className="text-sm font-normal">Merged</span></div>
-          {/*<div className="text-xs text-gray-500">{years} Years</div> 
-        </div> */}
+          <div className={`text-lg font-bold ${t.text}`}>
+            {mergedCount ?? "—"} <span className={`text-sm font-normal ${t.textSecondary}`}>Merged</span>
+          </div>
         </div>
       </div>
     </div>

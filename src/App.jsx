@@ -157,6 +157,11 @@ export default function GitHubContribScreenshot() {
 
   async function downloadScreenshot() {
     if (!containerRef.current) return;
+    
+    const style = document.createElement('style');
+    document.head.appendChild(style);
+    style.sheet?.insertRule('body > div:last-child img { display: inline-block; }');
+    
     const canvas = await html2canvas(containerRef.current, { 
       scale: 2, 
       useCORS: true, 

@@ -9,12 +9,21 @@ A React-based web application that generates beautiful screenshots of your GitHu
 
 ## ✨ Features
 
+### Core Features
 - 📊 **Automatic PR Discovery**: Fetches all your merged pull requests from GitHub API
 - ⭐ **Repository Insights**: Displays star counts, descriptions, and contribution details
 - 🎨 **Safari-Style UI**: Clean, professional browser mockup design
 - 📸 **High-Resolution Export**: Generate 2x resolution PNG screenshots via html2canvas
 - 🔐 **Token Support**: Optional Personal Access Token to avoid rate limits
 - 🚀 **Smart Pagination**: Automatically fetches up to 500 merged PRs
+
+### New Modular Features
+- 🧩 **Component Toggle System**: Show/hide individual components in your screenshot
+- 📅 **Contribution Heatmap**: GitHub-style contribution calendar with year selection
+- 🏆 **Top Repos Summary**: Compact card showing your top 5 repos by stars
+- 🎯 **Layout Presets**: Quick-select common layout combinations
+- 🎨 **8 Beautiful Themes**: Classic, Midnight, Sunset, Violet, Ocean, Forest, Dark, Neon
+- 📱 **Responsive Design**: Works seamlessly on mobile, tablet, and desktop
 
 ## 🚀 Quick Start
 
@@ -49,14 +58,47 @@ npm run build
 npm run preview
 ```
 
-
 ## 🎯 Usage
+
+### Basic Usage
 
 1. **Enter GitHub Username**: Type your GitHub username in the input field
 2. **Add Token (Optional)**: Paste a GitHub Personal Access Token if you hit rate limits
-   - No special scopes needed for public data
+   - For contribution heatmap, token needs `read:user` scope
    - Generate at: https://github.com/settings/tokens
 3. **Click Load**: The app fetches your merged PRs and organizes them by repository
+
+### Component Toggles
+
+Use the **Layout & Features** panel to customize what appears in your screenshot:
+
+- **GitHub Profile**: Shows avatar, name, followers, bio, and merged PR count
+- **Contribution Heatmap**: GitHub-style contribution graph with year selector
+- **Merged PRs Grid**: Full grid of repositories with PR details
+- **Top Repos Summary**: Compact cards showing top 5 repos by stars
+
+### Layout Presets
+
+Quick-select common layouts:
+
+- **Profile + Heatmap**: Great for showing activity overview
+- **Profile + Top Repos**: Highlight your best contributions
+- **Profile + PR Grid**: Detailed view of all contributions
+- **Heatmap Only**: Focus on contribution patterns
+- **All Components**: Show everything
+
+### Theme Selection
+
+Choose from 8 professionally designed themes:
+
+- **Classic**: Clean white background, perfect for professional use
+- **Midnight**: Dark slate theme with cyan accents
+- **Sunset**: Warm orange-to-pink gradient
+- **Violet Dreams**: Purple and fuchsia gradient
+- **Ocean Breeze**: Cool blue and cyan tones
+- **Forest**: Green and emerald nature theme
+- **Dark Mode**: Pure dark theme with indigo accents
+- **Neon Glow**: Cyberpunk-inspired with glowing effects
 
 ## 📁 Project Structure
 
@@ -64,23 +106,30 @@ npm run preview
 contrib-aura-farming/
 ├── src/
 │   ├── components/
-│   │   ├── GitHubProfileCard.jsx    # User profile display with stats
-│   │   └── SafariHeader.jsx          # Browser-style header UI
-│   ├── App.jsx                       # Main application logic
-│   ├── App.css                       # Component-specific styles
-│   ├── index.css                     # Global styles with Tailwind directives
-│   └── main.jsx                      # React app entry point
-├── public/                           # Static assets
-├── index.html                        # HTML template
-├── package.json                      # Dependencies and scripts
-├── package-lock.json                 # Locked dependency versions
-├── vite.config.js                    # Vite bundler configuration
-├── tailwind.config.js                # Tailwind CSS configuration
-├── postcss.config.js                 # PostCSS plugin setup
-├── eslint.config.js                  # ESLint code quality rules
-├── .gitignore                        # Git ignore patterns
-├── README.md                         # This file
-└── CONTRIBUTING.md                   # Contribution guidelines
+│   │   ├── GitHubProfileCard.jsx         # User profile with stats
+│   │   ├── SafariHeader.jsx              # Browser-style header
+│   │   ├── MergedPRsGrid.jsx             # Repository grid with PRs
+│   │   ├── TopMergedReposSummary.jsx     # Top 5 repos cards
+│   │   ├── ContributionHeatmap.jsx       # GitHub-style heatmap
+│   │   ├── LayoutTogglePanel.jsx         # Component toggle controls
+│   │   └── ThemeSelector.jsx             # Theme selection dropdown
+│   ├── constants/
+│   │   └── themes.js                     # Theme definitions
+│   ├── App.jsx                           # Main application logic
+│   ├── App.css                           # Component-specific styles
+│   ├── index.css                         # Global styles with Tailwind
+│   └── main.jsx                          # React app entry point
+├── public/                               # Static assets
+├── index.html                            # HTML template
+├── package.json                          # Dependencies and scripts
+├── package-lock.json                     # Locked dependency versions
+├── vite.config.js                        # Vite bundler configuration
+├── tailwind.config.js                    # Tailwind CSS configuration
+├── postcss.config.js                     # PostCSS plugin setup
+├── eslint.config.js                      # ESLint code quality rules
+├── .gitignore                            # Git ignore patterns
+├── README.md                             # This file
+└── CONTRIBUTING.md                       # Contribution guidelines
 ```
 
 ## 🛠️ Technology Stack
@@ -105,6 +154,7 @@ contrib-aura-farming/
 
 ### APIs
 - **GitHub REST API v3** - Fetches user data, PRs, and repository info
+- **GitHub GraphQL API v4** - Fetches contribution calendar data
 
 ## 🔧 Configuration Files
 
@@ -120,7 +170,7 @@ Configures PostCSS with Tailwind CSS and Autoprefixer plugins.
 ### `eslint.config.js`
 Sets up ESLint rules for React and JSX code quality.
 
-## 📝 Key Files Explained
+## 📝 Key Components Explained
 
 ### `src/App.jsx`
 Main application component containing:
@@ -128,6 +178,7 @@ Main application component containing:
 - PR fetching and aggregation
 - Repository details fetching
 - Screenshot download functionality
+- Component toggle state management
 - Error handling and loading states
 
 ### `src/components/GitHubProfileCard.jsx`
@@ -135,22 +186,61 @@ Displays user profile information:
 - Avatar with CORS support for html2canvas
 - Username and display name
 - Follower/following counts
-- Bio and email
+- Bio with 2-line clamp
+- Email if available
+- Merged PR count badge
+
+### `src/components/MergedPRsGrid.jsx`
+Repository grid component:
+- Full repository name with owner
+- Repository description
+- Star count with visual indicator
+- List of merged PRs (up to 5 shown)
+- Links to GitHub
+
+### `src/components/TopMergedReposSummary.jsx`
+Compact summary cards:
+- Top 5 repositories by star count
+- Repository name and owner
+- Star count
 - Merged PR count
+- Responsive grid layout
+
+### `src/components/ContributionHeatmap.jsx`
+GitHub-style contribution calendar:
+- Fetches data via GitHub GraphQL API
+- Year selector (last 5 years)
+- Color-coded contribution intensity
+- Total contribution count
+- Responsive week-by-week grid
+
+### `src/components/LayoutTogglePanel.jsx`
+Component visibility controls:
+- Individual component toggles
+- Quick preset buttons
+- Collapsible panel design
+- Selected count indicator
+
+### `src/components/ThemeSelector.jsx`
+Theme selection dropdown:
+- All 8 themes listed
+- Current theme indicator
+- Hover states
+- Clean dropdown UI
 
 ### `src/components/SafariHeader.jsx`
 Safari-style browser chrome:
 - macOS traffic light buttons
 - URL bar with lock icon
+- Theme-aware styling
 - Clean, minimalist design
 
-### `src/index.css`
-Global stylesheet with Tailwind directives:
-```css
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-```
+### `src/constants/themes.js`
+Centralized theme definitions:
+- 8 complete theme configurations
+- Background, text, border, accent colors
+- Shadow styles
+- Header styles
 
 ## 🎨 Styling Approach
 
@@ -160,6 +250,7 @@ This project uses **Tailwind CSS** utility classes for styling:
 - **Responsive design** - Mobile-first approach with breakpoints
 - **Consistent spacing** - Uses Tailwind's spacing scale
 - **Component composition** - Reusable component patterns
+- **Theme system** - Centralized color schemes
 
 Example:
 ```jsx
@@ -168,9 +259,21 @@ Example:
 </div>
 ```
 
-## 🔒 Environment Variables
+## 🔒 Environment Variables & Security
 
-No environment variables required. GitHub Personal Access Tokens are entered directly in the UI (not stored).
+No environment variables required. GitHub Personal Access Tokens are:
+- Entered directly in the UI
+- **Never stored** in localStorage or cookies
+- **Never logged** to console
+- Used only for API requests
+- Passed via Authorization header
+
+### Token Scopes
+
+For full functionality:
+- **Public data**: No token required (subject to rate limits)
+- **Contribution heatmap**: Token with `read:user` scope recommended
+- **Private repos**: Token with `repo` scope (future feature)
 
 ## 🤝 Contributing
 
@@ -202,14 +305,28 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🗺️ Roadmap
 
-- [ ] Dark mode theme toggle
-- [ ] Export to PDF format
+### Completed ✅
+- [x] Modular component system with toggles
+- [x] Contribution heatmap with year selection
+- [x] Top repos summary component
+- [x] Layout preset system
+- [x] 8 beautiful themes
+- [x] Responsive design
+
+### In Progress 🚧
+- [ ] PDF export format
 - [ ] Multiple screenshot layout templates
 - [ ] Contribution statistics dashboard
+
+### Future Features 🔮
 - [ ] Private repository support (with OAuth)
 - [ ] Team/organization contribution views
 - [ ] Historical data tracking and trends
 - [ ] GitLab and Bitbucket integration
+- [ ] Custom date range filtering
+- [ ] Drag-and-drop component reordering
+- [ ] Save/load configuration presets
+- [ ] Social media share integration
 
 ## 📊 Project Stats
 
@@ -218,6 +335,29 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **Build Tool**: Vite 5
 - **Styling**: Tailwind CSS 3
 - **Package Manager**: npm
+- **Components**: 8 modular components
+- **Themes**: 8 professional themes
+- **Layout Presets**: 5 quick presets
+
+## 💡 Tips & Tricks
+
+### For Best Screenshot Quality
+1. Use 2x scale (default) for high-resolution output
+2. Choose themes with good contrast for readability
+3. Enable only components you need to reduce clutter
+4. For LinkedIn: Aim for 1200×630 or higher resolution
+
+### For Contribution Heatmap
+1. Use a GitHub token for reliable data fetching
+2. Token needs `read:user` scope minimum
+3. Select different years to show activity trends
+4. Works best with Classic, Midnight, or Dark themes
+
+### For Performance
+1. Limit to top 500 PRs for faster loading
+2. Use token to avoid rate limiting
+3. Components only render when toggled on
+4. Screenshot generation optimized with CORS
 
 ---
 

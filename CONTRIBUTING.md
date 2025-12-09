@@ -512,7 +512,3 @@ New to React or open source? Check out these resources:
 Your contributions make this project better for everyone. Whether you're fixing typos, adding features, or improving documentation, every contribution matters.
 
 Happy coding! 🚀
-
----
-
-*This contributing guide is adapted from the open source contributing guides for Facebook's Draft.js and Atom.*

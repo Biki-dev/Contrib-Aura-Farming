@@ -1,81 +1,14 @@
 import React from "react";
 import { Github, Users, Mail } from "lucide-react";
+import { THEMES } from "../constants/themes";
 
 export default function GitHubProfileCard({ profile, mergedCount, theme }) {
   if (!profile) return null;
 
-  // Import THEMES from parent or receive theme colors as props
-  const THEMES = {
-    classic: {
-      bg: "bg-white",
-      cardBg: "bg-gray-50",
-      text: "text-gray-900",
-      textSecondary: "text-gray-600",
-      textTertiary: "text-gray-500",
-      accent: "text-blue-600"
-    },
-    midnight: {
-      bg: "bg-slate-900",
-      cardBg: "bg-slate-800",
-      text: "text-white",
-      textSecondary: "text-slate-300",
-      textTertiary: "text-slate-400",
-      accent: "text-cyan-400"
-    },
-    sunset: {
-      bg: "bg-gradient-to-br from-orange-50 to-pink-50",
-      cardBg: "bg-white/80 backdrop-blur",
-      text: "text-gray-900",
-      textSecondary: "text-orange-800",
-      textTertiary: "text-orange-600",
-      accent: "text-orange-600"
-    },
-    violet: {
-      bg: "bg-gradient-to-br from-purple-100 via-violet-50 to-fuchsia-100",
-      cardBg: "bg-white/90 backdrop-blur",
-      text: "text-gray-900",
-      textSecondary: "text-purple-700",
-      textTertiary: "text-purple-500",
-      accent: "text-purple-600"
-    },
-    ocean: {
-      bg: "bg-gradient-to-br from-blue-50 to-cyan-50",
-      cardBg: "bg-white/80 backdrop-blur",
-      text: "text-gray-900",
-      textSecondary: "text-blue-700",
-      textTertiary: "text-blue-500",
-      accent: "text-blue-600"
-    },
-    forest: {
-      bg: "bg-gradient-to-br from-green-50 to-emerald-50",
-      cardBg: "bg-white/90 backdrop-blur",
-      text: "text-gray-900",
-      textSecondary: "text-green-800",
-      textTertiary: "text-green-600",
-      accent: "text-green-600"
-    },
-    dark: {
-      bg: "bg-gray-950",
-      cardBg: "bg-gray-900",
-      text: "text-gray-100",
-      textSecondary: "text-gray-300",
-      textTertiary: "text-gray-400",
-      accent: "text-indigo-400"
-    },
-    neon: {
-      bg: "bg-black",
-      cardBg: "bg-gray-900",
-      text: "text-green-400",
-      textSecondary: "text-cyan-400",
-      textTertiary: "text-pink-400",
-      accent: "text-pink-500"
-    }
-  };
-
   const t = THEMES[theme] || THEMES.classic;
 
   return (
-    <div className={`flex items-start justify-between ${t.bg} rounded-lg p-4 mb-2`}>
+    <div className={`flex items-start justify-between ${t.bg} rounded-lg p-4 mb-6`}>
       <div className="flex items-start gap-4">
         <img
           src={profile.avatar_url}
@@ -102,7 +35,9 @@ export default function GitHubProfileCard({ profile, mergedCount, theme }) {
           </div>
 
           {profile.bio && (
-            <div className={`mt-2 text-sm ${t.textSecondary} pr-2`}>{profile.bio}</div>
+            <div className={`mt-2 text-sm ${t.textSecondary} pr-2 line-clamp-2`}>
+              {profile.bio}
+            </div>
           )}
 
           {profile.email && (

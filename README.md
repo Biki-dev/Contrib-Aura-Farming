@@ -7,7 +7,7 @@ A React-based web application that generates beautiful screenshots of your GitHu
 ![Vite](https://img.shields.io/badge/vite-5.3.1-purple.svg)
 ![Tailwind](https://img.shields.io/badge/tailwindcss-3.4.18-38bdf8.svg)
 
-## ✨ Features
+## ✨ Features 
 
 ### Core Features
 - 📊 **Automatic PR Discovery**: Fetches all your merged pull requests from GitHub API

@@ -1,0 +1,39 @@
+# Allow all crawlers
+User-agent: *
+Allow: /
+
+# Specific bot optimizations
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+User-agent: Googlebot-Image
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 0
+
+User-agent: Slurp
+Allow: /
+
+# Social Media Bots
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: LinkedInBot
+Allow: /
+
+User-agent: PinterestBot
+Allow: /
+
+# Disallow specific paths if needed (currently none)
+# Disallow: /api/
+# Disallow: /admin/
+
+# Sitemap location
+Sitemap: https://contrib-aura-farming.vercel.app/sitemap.xml
+Sitemap: https://contrib-aura-farming.vercel.app/sitemap-images.xml
